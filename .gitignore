@@ -1,3 +1,6 @@
 .env
 __pycache__/
 *.pyc
+sample_transcript_analysis.json
+sample_transcript_ideal_call.txt
+sample_transcript.txt

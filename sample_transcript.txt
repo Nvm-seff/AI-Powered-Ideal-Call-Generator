@@ -1,0 +1,7 @@
+AGENT: Clinic, hello.
+PATIENT: Hi, I need to see someone about my back.
+AGENT: Okay, name?
+PATIENT: John Smith.
+AGENT: And what's the problem with the back?
+PATIENT: It just really hurts when I bend over.
+AGENT: Okay, we can see you Tuesday at 10.
