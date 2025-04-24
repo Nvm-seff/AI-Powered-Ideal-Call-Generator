@@ -1,166 +1,94 @@
-import os
-from dotenv import load_dotenv
-import google.generativeai as genai
-import openai
-from openai import OpenAI, RateLimitError
-import time # Import time for potential delays if needed
+# main.py
+import json
+import config # To access configuration constants easily if needed
+from kpis import KPI_LIST
+from transcript_processor import load_transcript
+from prompt_builder import build_analysis_prompt
+from gemini_client import generate_analysis
+from analysis_parser import parse_gemini_response
 
-# Load environment variables
-load_dotenv()
+def run_analysis(transcript_file_path: str):
+    """
+    Runs the full call analysis pipeline.
 
-# --- Gemini Configuration ---
-gemini_api_key = os.getenv("GEMINI_API_KEY")
-if not gemini_api_key:
-    raise ValueError("GEMINI_API_KEY not found in environment variables!")
-try:
-    genai.configure(api_key=gemini_api_key)
-    # Initialize the Gemini model
-    # Using gemini-1.5-flash as it's often faster and cheaper for simple tasks
-    # You can change back to 'models/gemini-1.5-pro-latest' or your previous model if needed
-    gemini_model = genai.GenerativeModel('models/gemini-1.5-flash-latest')
-    print("Gemini API configured successfully.")
-except Exception as e:
-    print(f"Error configuring Gemini API: {e}")
-    gemini_model = None # Set model to None if configuration fails
+    Args:
+        transcript_file_path: Path to the call transcript file.
+    """
+    print(f"--- Starting Analysis for: {transcript_file_path} ---")
 
-# --- OpenAI Configuration (kept for later use) ---
-openai_api_key = os.getenv("OPENAI_API_KEY")
-if not openai_api_key:
-    print("Warning: OPENAI_API_KEY not found, OpenAI features will be unavailable.")
-    client = None
-    openai_enabled = False
-else:
-    try:
-        openai.api_key = openai_api_key
-        client = OpenAI(api_key=openai_api_key)
-        openai_enabled = True
-        print("OpenAI API configured successfully.")
-    except Exception as e:
-        print(f"Error configuring OpenAI API: {e}")
-        client = None
-        openai_enabled = False
-
-
-# --- Processing Functions ---
-
-def process_text_input_gemini(user_input):
-    """Sends input to the Gemini model and returns the text response."""
-    if not gemini_model:
-        return "Error: Gemini model not initialized."
-    try:
-        # Increased safety settings slightly for general queries
-        safety_settings = [
-            {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
-            {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
-            {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
-            {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
-        ]
-        response = gemini_model.generate_content(
-            user_input,
-            safety_settings=safety_settings
-            )
-        # Check if the response has text content before accessing it
-        if response.parts:
-             return response.text.strip()
-        elif response.prompt_feedback.block_reason:
-             return f"Error: Content blocked by Gemini. Reason: {response.prompt_feedback.block_reason}"
-        else:
-             # Handle cases where response might be empty without a block reason (less common)
-             return "Error: Gemini returned an empty response."
-    except Exception as e:
-        # Catch potential API errors (e.g., connection issues, invalid requests)
-        return f"Error interacting with Gemini API: {e}"
-
-
-# OpenAI function (kept for later use)
-def process_text_input_openai(user_input):
-    """Sends input to the OpenAI model and returns the text response."""
-    if not openai_enabled or not client:
-        return "Error: OpenAI client not initialized or key missing."
-    try:
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo", # Or specify another model like gpt-4o-mini
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": user_input}
-            ]
-        )
-        return response.choices[0].message.content.strip()
-
-    except RateLimitError as e:
-        return f"Error: Rate limit exceeded. Check OpenAI usage/billing. Details: {e}"
-    except openai.APIConnectionError as e:
-        return f"OpenAI API request failed to connect: {e}"
-    except openai.APIStatusError as e:
-        return f"OpenAI API returned an error status code: {e.status_code} - {e.response}"
-    except Exception as e:
-        return f"An unexpected error occurred with OpenAI: {e}"
-
-
-def list_available_models_gemini():
-    """Lists available Gemini models."""
-    if not gemini_model:
-        print("Gemini model not initialized.")
+    # 1. Load Transcript
+    transcript = load_transcript(transcript_file_path)
+    if not transcript:
+        print("Analysis aborted: Could not load transcript.")
         return
-    try:
-        print("\n--- Available Gemini Models ---")
-        models = genai.list_models()
-        # Filter for models supporting generateContent for text tasks
-        generative_models = [m for m in models if 'generateContent' in m.supported_generation_methods]
-        if not generative_models:
-            print("No generative models found.")
-            return
-        for model in generative_models:
-            # Basic check for text generation capability (might need refinement based on specific model features)
-            print(f"- {model.name} (Display Name: {model.display_name})")
-            # print(f"  Description: {model.description}") # Uncomment for more detail
-        print("-----------------------------\n")
-    except Exception as e:
-        print(f"Error listing Gemini models: {e}")
 
-# --- Main Execution ---
-if __name__ == "__main__":
-    prompt_file = "prompts.txt"
-    print(f"Attempting to read prompts from: {prompt_file}")
+    # (Optional) Print snippet of transcript
+    # print("\n--- Transcript Snippet ---")
+    # print(transcript[:500] + "...")
+    # print("-" * 20)
 
-    # Optional: List available Gemini models on startup
-    # list_available_models_gemini()
+    # 2. Build Prompt
+    print("Building analysis prompt...")
+    prompt = build_analysis_prompt(transcript, KPI_LIST)
+    # (Optional) Print snippet of prompt
+    # print("\n--- Prompt Snippet ---")
+    # print(prompt[:500] + "...")
+    # print("-" * 20)
 
-    if not gemini_model:
-        print("Exiting: Gemini model could not be initialized.")
-    else:
+
+    # 3. Get Analysis from Gemini
+    raw_analysis_response = generate_analysis(prompt)
+    if not raw_analysis_response:
+        print("Analysis aborted: Failed to get response from Gemini.")
+        return
+
+    # 4. Parse the Response
+    analysis_result = parse_gemini_response(raw_analysis_response)
+
+    # 5. Display/Save Results
+    if analysis_result:
+        print("\n--- Analysis Successful ---")
+        # Pretty print the JSON analysis
+        print(json.dumps(analysis_result, indent=2))
+
+        # TODO: Save the result to a file or database if needed
+        output_filename = transcript_file_path.replace(".txt", "_analysis.json")
         try:
-            with open(prompt_file, 'r', encoding='utf-8') as f:
-                prompts = f.readlines()
+            with open(output_filename, 'w', encoding='utf-8') as f:
+                json.dump(analysis_result, f, indent=2, ensure_ascii=False)
+            print(f"\nAnalysis saved to: {output_filename}")
+        except Exception as e:
+            print(f"Error saving analysis results: {e}")
 
-            if not prompts:
-                print(f"Warning: '{prompt_file}' is empty.")
-            else:
-                print(f"\n--- Processing prompts from {prompt_file} using Gemini ---")
-                for i, prompt in enumerate(prompts):
-                    cleaned_prompt = prompt.strip() # Remove leading/trailing whitespace and newline
-                    if not cleaned_prompt or cleaned_prompt.startswith('#'): # Skip empty lines and comments
-                        continue
+    else:
+        print("\n--- Analysis Failed ---")
+        print("Could not parse a valid JSON object from the Gemini response.")
+        # The parser function already printed the raw response for debugging
 
-                    print(f"\n[{i+1}] Prompt: {cleaned_prompt}")
-                    gemini_answer = process_text_input_gemini(cleaned_prompt)
-                    print(f"Gemini Response: {gemini_answer}")
-                    # Optional: Add a small delay between API calls if needed
-                    # time.sleep(1)
+    print(f"--- Analysis Finished for: {transcript_file_path} ---")
 
-                print("\n--- Finished processing all prompts ---")
 
-        except FileNotFoundError:
-            print(f"Error: File '{prompt_file}' not found. Please create it in the same directory as the script, with one prompt per line.")
-        except Exception as e: # Catch other potential errors during file reading or processing
-            print(f"An unexpected error occurred: {e}")
+if __name__ == "__main__":
+    # --- INPUT: Specify the path to your transcript file ---
+    # Ensure this file exists and contains the diarized transcript
+    # with speaker labels matching those in config.py (e.g., AGENT:, PATIENT:)
+    transcript_to_analyze = "sample_transcript.txt" # <--- CHANGE THIS
 
-    # --- Example of how you might use OpenAI later (currently commented out) ---
-    # if openai_enabled:
-    #     simulated_transcription = "What is the capital of Spain?"
-    #     print("\n--- Testing OpenAI ---")
-    #     openai_answer = process_text_input_openai(simulated_transcription)
-    #     print(f"Prompt: {simulated_transcription}")
-    #     print(f"OpenAI Response: {openai_answer}")
-    # else:
-    #     print("\nOpenAI processing skipped (not enabled or configured).")
+    # Create a dummy sample file if it doesn't exist for a quick test
+    import os
+    if not os.path.exists(transcript_to_analyze):
+         print(f"Creating dummy transcript file: {transcript_to_analyze}")
+         with open(transcript_to_analyze, "w", encoding='utf-8') as f:
+            f.write(f"{config.AGENT_SPEAKER_LABEL}: Hello, thank you for calling Healthy Clinic, my name is Alex. May I have your full name, please?\n")
+            f.write(f"{config.PATIENT_SPEAKER_LABEL}: Yes, it's Jane Doe.\n")
+            f.write(f"{config.AGENT_SPEAKER_LABEL}: Thanks, Jane. Could you spell that for me?\n")
+            f.write(f"{config.PATIENT_SPEAKER_LABEL}: J-A-N-E D-O-E.\n")
+            f.write(f"{config.AGENT_SPEAKER_LABEL}: Perfect, thank you. And Jane, what is the primary reason for your call today?\n") # Missed phone verification, lead source
+            f.write(f"{config.PATIENT_SPEAKER_LABEL}: My knee has been really painful for the last week.\n")
+            f.write(f"{config.AGENT_SPEAKER_LABEL}: Okay, the knee. Is it your right or left?\n") # Good specification
+            f.write(f"{config.PATIENT_SPEAKER_LABEL}: The left one.\n")
+            f.write(f"{config.AGENT_SPEAKER_LABEL}: Got it. Have you had any treatment for this before?\n") # Asking about previous treatment
+            f.write(f"{config.PATIENT_SPEAKER_LABEL}: No, not for this.\n")
+
+
+    run_analysis(transcript_to_analyze)
