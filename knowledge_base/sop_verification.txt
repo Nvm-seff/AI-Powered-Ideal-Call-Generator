@@ -1,0 +1,13 @@
+Best Practice: Verify essential contact and identifying information early in the call, typically right after obtaining the patient's name. This ensures accuracy for records and follow-up.
+
+Essential Verification Checklist:
+1.  **Full Name Spelling:**
+    - Example: 'Thank you, [Patient Name]. Could you please spell your last name for me to ensure I have it correct?'
+2.  **Phone Number:**
+    - Example: 'And could you verify the best phone number to reach you at?'
+3.  **Date of Birth (If required by clinic protocol for identification):**
+    - Example: 'To ensure I pull up the correct record, could you also please provide your date of birth?'
+
+Optional (Based on call flow/clinic needs):
+- Email Address
+- Physical Address

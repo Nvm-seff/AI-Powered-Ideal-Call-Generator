@@ -1,0 +1,10 @@
+Best Practice: Start calls professionally and clearly state your name and the clinic's name. Aim to immediately engage the patient politely.
+
+Example Script Opening:
+'Thank you for calling CareCloud MTBC , my name is [Agent Name]. To help you best today, could I please start with your full name?'
+
+Key elements:
+- Greeting (Thank you for calling...)
+- Clinic Name
+- Agent Name
+- Polite request for patient identification (e.g., name)

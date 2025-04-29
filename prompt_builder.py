@@ -73,28 +73,30 @@ def build_analysis_prompt(transcript: str, kpis: List[str]) -> str:
 
 
 # --- NEW Function ---
-def build_ideal_call_prompt(original_transcript: str, analysis_report: Dict[str, Any]) -> str:
+def build_ideal_call_prompt(original_transcript: str, analysis_report: Dict[str, Any], retrieved_knowledge: List[str]) -> str:
     """
-    Builds the prompt for Gemini to generate an ideal call script or segments,
-    based on the original transcript and the analysis report.
+    Builds the prompt for Gemini to generate an ideal call script,
+    augmented with retrieved knowledge based on the analysis report.
 
     Args:
         original_transcript: The full original call transcript string.
         analysis_report: The parsed JSON analysis report as a dictionary.
+        retrieved_knowledge: A list of strings containing relevant knowledge chunks.
 
     Returns:
-        The formatted prompt string for ideal call generation.
+        The formatted RAG prompt string for ideal call generation.
     """
-    # Extract key findings from the analysis report
     missed_kpis = [item['kpi'] for item in analysis_report.get('kpi_analysis', []) if item.get('status') == 'Not Met']
     improvement_areas = analysis_report.get('overall_assessment', {}).get('mistakes_and_improvement_areas', [])
-    # You could also extract specific soft skills needing improvement if desired
 
     missed_kpis_string = "\n".join([f"- {kpi}" for kpi in missed_kpis]) if missed_kpis else "None identified."
     improvement_areas_string = "\n".join([f"- {area}" for area in improvement_areas]) if improvement_areas else "None identified."
 
+    # Format the retrieved knowledge for inclusion in the prompt
+    retrieved_knowledge_string = "\n\n".join(retrieved_knowledge) if retrieved_knowledge else "No specific knowledge chunks were retrieved for this task."
+
     prompt = f"""
-    **Objective:** Generate an improved version or specific improved segments of a patient call script for the customer support representative ('{config.AGENT_SPEAKER_LABEL}'). This generated script should serve as a training example, addressing the weaknesses identified in the original call analysis.
+    **Objective:** Generate an improved version or specific improved segments of a patient call script for the customer support representative ('{config.AGENT_SPEAKER_LABEL}'). This generated script should serve as a training example, addressing the weaknesses identified in the original call analysis **by incorporating the provided best practices and examples.**
 
     **Original Call Transcript:**
     ```
@@ -109,32 +111,19 @@ def build_ideal_call_prompt(original_transcript: str, analysis_report: Dict[str,
     *   **Specific Mistakes / Areas for Improvement:**
     {improvement_areas_string}
 
-    *   **(Refer to soft skills assessment in the original analysis for tone, empathy, etc. improvements if applicable)**
+    **Retrieved Knowledge (Best Practices / Examples):**
+    {retrieved_knowledge_string}
 
     **Task:**
 
-    1.  **Rewrite Agent Dialogue:** Focus on rewriting the dialogue for '{config.AGENT_SPEAKER_LABEL}'. Incorporate best practices to address the 'Missed KPIs' and 'Mistakes/Improvement Areas' listed above. Ensure all necessary information according to the KPIs is gathered correctly and sensitively.
-    2.  **Demonstrate Soft Skills:** The rewritten dialogue should demonstrate positive tone, confidence, empathy, clarity, and effective conversation control, based on standard best practices for patient interaction.
-    3.  **Maintain Context:** Keep the '{config.PATIENT_SPEAKER_LABEL}'s dialogue mostly the same as the original transcript to show how the agent *should have* responded in the actual situation. You can make minor adjustments to the patient's lines if absolutely necessary for flow, but the focus is on the agent's improvement.
-    4.  **Format:** Present the output as a revised script or script segments. Clearly label the speakers using '{config.AGENT_SPEAKER_LABEL}:' and '{config.PATIENT_SPEAKER_LABEL}:'. You can choose to rewrite the full call or focus on the most critical segments needing improvement. Provide enough context for the segments to be understandable. *Do not* output JSON.
+    1.  **Rewrite Agent Dialogue:** Focus on rewriting the dialogue for '{config.AGENT_SPEAKER_LABEL}'. Incorporate best practices to address the 'Missed KPIs' and 'Mistakes/Improvement Areas' listed above. **Crucially, use the guidance and examples provided in the 'Retrieved Knowledge' section** to inform the phrasing, questions asked, and overall approach. Ensure all necessary information according to the KPIs is gathered correctly and sensitively.
+    2.  **Demonstrate Soft Skills:** The rewritten dialogue should demonstrate positive tone, confidence, empathy, clarity, and effective conversation control, referencing the retrieved knowledge where applicable (e.g., for empathetic statements).
+    3.  **Maintain Context:** Keep the '{config.PATIENT_SPEAKER_LABEL}'s dialogue mostly the same as the original transcript to show how the agent *should have* responded. Minor adjustments are acceptable for flow.
+    4.  **Format:** Present the output as a revised script or script segments. Clearly label the speakers using '{config.AGENT_SPEAKER_LABEL}:' and '{config.PATIENT_SPEAKER_LABEL}:'. Focus on the most critical segments needing improvement, guided by the analysis and retrieved knowledge. *Do not* output JSON.
 
-    **Example of desired output format (segment):**
-
-    ... (previous dialogue) ...
-    {config.PATIENT_SPEAKER_LABEL}: Hi, my name is Jane Doe.
-    {config.AGENT_SPEAKER_LABEL}: Thank you, Jane. It's nice to speak with you. Could you please spell your last name for me to ensure I have it correctly?
-    {config.PATIENT_SPEAKER_LABEL}: D-O-E.
-    {config.AGENT_SPEAKER_LABEL}: Perfect, thank you. And Jane, could you also please verify the best phone number to reach you at?
-    {config.PATIENT_SPEAKER_LABEL}: It's 555-123-4567.
-    {config.AGENT_SPEAKER_LABEL}: Got it, 555-123-4567. Thanks! And how did you hear about our clinic today?
-    {config.PATIENT_SPEAKER_LABEL}: My friend recommended you.
-    {config.AGENT_SPEAKER_LABEL}: That's wonderful to hear! We appreciate the recommendation. Now, could you tell me a bit more about what's bothering you and led you to call us?
-    ... (continue with improved dialogue) ...
-
-    **Generate the improved script/segments now:**
+    **Generate the improved script/segments now, using the provided knowledge:**
     """
     return prompt
-
 # --- Example Usage (Optional) ---
 # if __name__ == "__main__":
 #     # Assume sample_transcript.txt exists from previous steps

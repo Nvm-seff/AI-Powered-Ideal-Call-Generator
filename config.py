@@ -19,3 +19,17 @@ PATIENT_SPEAKER_LABEL = "PATIENT" # Or "SPEAKER_02", "Caller", etc.
 # Response generation settings (adjust as needed)
 GEMINI_TEMPERATURE = 0.2 # Lower temperature for more deterministic, factual analysis
 GEMINI_MAX_OUTPUT_TOKENS = 8192 # Generous limit for JSON output, adjust based on model/needs
+
+
+# --- ElevenLabs Config ---
+ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
+if not ELEVENLABS_API_KEY:
+    print("Warning: ELEVENLABS_API_KEY environment variable not set. TTS functionality will fail.")
+
+
+
+AGENT_VOICE_ID = os.getenv("AGENT_ID")  
+PATIENT_VOICE_ID = os.getenv("PATIENT_ID") 
+
+# Choose an ElevenLabs model - "eleven_multilingual_v2" is versatile
+ELEVENLABS_MODEL = "eleven_multilingual_v2"

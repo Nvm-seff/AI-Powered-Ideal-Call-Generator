@@ -1,0 +1,10 @@
+Best Practice: Clearly and proactively disclose if the practice is out-of-network (OON) with the patient's insurance *before* confirming an appointment. This manages expectations regarding potential costs. The ideal time is usually during or immediately after discussing their insurance information.
+
+Example Disclosure Script:
+'Thank you for providing your insurance information. I do want to let you know that [Clinic Name] is considered an out-of-network provider with most insurance plans, including [Mention Patient's Plan if known, e.g., Aetna].'
+
+Explanation to include:
+'Being out-of-network means that while you can absolutely receive care here, your insurance plan might cover a smaller portion of the costs compared to an in-network facility. This could result in a higher out-of-pocket responsibility for you, such as paying towards a deductible or a larger coinsurance.'
+
+Offer Next Steps:
+'We are happy to provide you with a superbill (a detailed receipt) after your visit, which you can submit to your insurance company for any potential direct reimbursement based on your plan's out-of-network benefits. Would you like to proceed with scheduling knowing we are out-of-network?'

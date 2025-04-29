@@ -1,0 +1,20 @@
+Best Practice: If the patient indicates the reason for their call might be related to a Motor Vehicle Accident (MVA) or Workers Compensation (W/C), systematically gather specific details required for these case types.
+
+MVA/WC Initial Question:
+- 'Is this condition or injury related to an accident, either a car accident (MVA) or an incident at work (Workers Comp)?'
+
+If YES to MVA:
+- Date of the accident?
+- State where the accident occurred?
+- What was your role (e.g., driver, passenger, pedestrian)?
+- Were airbags deployed? Was a seatbelt worn?
+- Were you taken by ambulance or other transport to a healthcare facility?
+    - If yes, which facility?
+- Do you have auto insurance claim information? (Insurer, Claim #, Adjuster Name/Contact #)
+- Are you currently working with an attorney regarding the accident? (If yes, get Attorney Name/Contact #)
+
+If YES to W/C:
+- Date of the work injury?
+- Employer at the time of injury?
+- Do you have Workers Compensation claim information? (Insurer, Claim #, Adjuster Name/Contact #)
+- Are you working with an attorney? (If yes, get Attorney Name/Contact #)

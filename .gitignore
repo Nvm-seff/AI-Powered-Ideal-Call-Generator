@@ -4,3 +4,4 @@ __pycache__/
 sample_transcript_analysis.json
 sample_transcript_ideal_call.txt
 sample_transcript.txt
+venv/
