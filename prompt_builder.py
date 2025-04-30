@@ -124,6 +124,52 @@ def build_ideal_call_prompt(original_transcript: str, analysis_report: Dict[str,
     **Generate the improved script/segments now, using the provided knowledge:**
     """
     return prompt
+
+def build_diarization_prompt(raw_transcript: str) -> str:
+    """
+    Builds the prompt for Gemini to format a raw transcript and add speaker labels.
+
+    Args:
+        raw_transcript: The unstructured text output from Whisper.
+
+    Returns:
+        The formatted prompt string for the diarization task.
+    """
+    # Use speaker labels defined in config for consistency
+    agent_label = config.AGENT_SPEAKER_LABEL
+    patient_label = config.PATIENT_SPEAKER_LABEL
+
+    prompt = f"""
+    **Objective:** Convert the following raw, unstructured call transcript into a structured dialogue format with speaker labels. The call is between a healthcare clinic Customer Support Representative ({agent_label}) and a Patient ({patient_label}).
+
+    **Raw Transcript:**
+    ```
+    {raw_transcript}
+    ```
+
+    **Task:**
+    1. Read the raw transcript carefully.
+    2. Identify the distinct utterances (turns) for each speaker ({agent_label} and {patient_label}).
+    3. Assign the correct speaker label ({agent_label}: or {patient_label}:) to the beginning of each utterance.
+    4. Format the output so that each utterance appears on a new line, prefixed by its speaker label.
+    5. **Crucially:** Ensure the output contains *only* the formatted dialogue. Do not add any introductory text, summaries, explanations, or markdown formatting like ```.
+
+    **Example Input:**
+    ```
+    Hello this is Clinic XYZ how can I help? Hi I need to make an appointment. Okay what's your name? Jane Doe. Thanks Jane.
+    ```
+
+    **Example Output:**
+    {agent_label}: Hello this is Clinic XYZ how can I help?
+    {patient_label}: Hi I need to make an appointment.
+    {agent_label}: Okay what's your name?
+    {patient_label}: Jane Doe.
+    {agent_label}: Thanks Jane.
+
+    **Now, process the provided Raw Transcript and generate the structured dialogue:**
+    """
+    return prompt
+
 # --- Example Usage (Optional) ---
 # if __name__ == "__main__":
 #     # Assume sample_transcript.txt exists from previous steps

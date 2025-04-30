@@ -5,3 +5,5 @@ sample_transcript_analysis.json
 sample_transcript_ideal_call.txt
 sample_transcript.txt
 venv/
+knowledge_base/
+Calls_Generated/Audio_Call_Gen/dialogue_output.mp3

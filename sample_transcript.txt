@@ -1,34 +1,71 @@
-AGENT: Hello, thank you for calling Healthy Clinic, my name is Ben. May I start with your full name, please?
-PATIENT: Hi Ben, it's Sarah Miller.
-AGENT: Okay Sarah, thanks. Could you spell your last name for me?
-PATIENT: Sure, M-I-L-L-E-R.
-AGENT: Got it. And what's the best phone number to reach you?
-PATIENT: 555-987-6543.
-AGENT: Okay, 555-987-6543. So, what brings you in today?
-PATIENT: My left shoulder has been really stiff and painful for about two weeks.
-AGENT: Your left shoulder, okay. Besides stiff and painful, are there any other symptoms like clicking, grinding, or weakness?
-PATIENT: It's mainly the stiffness, and I definitely feel weaker when I try to lift things overhead.
-AGENT: And this started about two weeks ago? Has it been constant, or does it come and go?
-PATIENT: It's been pretty constant since it started.
-AGENT: Alright. Is this related to any specific injury, like a fall, car accident, or anything at work?
-PATIENT: No, not that I can think of. It just kind of started.
-AGENT: Have you had any prior treatment or seen any other doctors for this specific shoulder issue before?
-PATIENT: No, this is the first time.
-AGENT: Okay. Let's look at insurance. Do you have health insurance you'd like to use?
-PATIENT: Yes, I have Aetna.
-AGENT: Okay, Aetna. Could I get the Member ID number from your card?
-PATIENT: It's W123456789.
-AGENT: W123456789. Is there a group number as well?
-PATIENT: Yes, GRP-ABC.
-AGENT: And are you the subscriber, the main person on the policy?
-PATIENT: Yes.
-AGENT: Do you have any secondary insurance coverage?
-PATIENT: No, just the Aetna.
-AGENT: Okay, thanks for that information. Let me check the schedule... It looks like Dr. Davis has an opening this Friday at 10:30 AM. Would that time work for you?
-PATIENT: Yes, Friday at 10:30 is perfect.
-AGENT: Great. So that's booked. Friday at 10:30 AM with Dr. Davis at our main clinic on 456 Health Drive. We'll send you a text message with a link to our online new patient portal to complete your paperwork beforehand. Please try to do that at least a day before your visit.
-PATIENT: Okay, sounds good.
-AGENT: Do you have any other questions right now?
-PATIENT: No, thank you.
-AGENT: Alright then, Sarah. We look forward to seeing you on Friday. Have a good day!
-PATIENT: Thanks, you too. Bye.
+AGENT: Good morning! Thank you for calling Sunrise Family Care. This is Lisa speaking. May I have your full name to get started?
+
+PATIENT: Hi Lisa, my name is James Turner.
+
+AGENT: Thanks, James. Can you spell your last name for me, please?
+
+PATIENT: Sure, it’s T-U-R-N-E-R.
+
+AGENT: Got it, thank you. And what's the best phone number we can use to reach you?
+
+PATIENT: You can reach me at 444-321-7788.
+
+AGENT: Alright, 444-321-7788. So, what can we help you with today?
+
+PATIENT: I've been having some trouble with my lower back. It's been sore and kind of stiff for about a week and a half now.
+
+AGENT: Okay, lower back soreness and stiffness. Have you noticed any other symptoms? Like numbness, tingling, or pain shooting down your leg?
+
+PATIENT: Yeah, actually—sometimes there's a dull ache that goes into my right leg, especially if I’ve been sitting too long.
+
+AGENT: That sounds uncomfortable. And you said it started about a week and a half ago?
+
+PATIENT: Yeah, right around then.
+
+AGENT: Has it been constant or does it come and go?
+
+PATIENT: Mostly constant, but worse at the end of the day.
+
+AGENT: Alright. Do you recall if this started after any injury—maybe lifting something, sports, or even a long drive?
+
+PATIENT: I think it started after I helped a friend move some furniture, but I’m not totally sure.
+
+AGENT: Got it. And have you seen anyone else for this issue yet?
+
+PATIENT: No, you guys are the first I’ve contacted.
+
+AGENT: Okay, let’s take a look at your insurance. Do you have coverage you’d like to use?
+
+PATIENT: Yes, I’m with Blue Cross Blue Shield.
+
+AGENT: Great, Blue Cross. Can you read me the Member ID number from your card?
+
+PATIENT: It’s BC987654321.
+
+AGENT: Thank you. And do you happen to have a group number listed?
+
+PATIENT: Yeah, it says GRP-789T.
+
+AGENT: Perfect. And are you the primary policyholder?
+
+PATIENT: Yes, I am.
+
+AGENT: Do you carry any secondary insurance?
+
+PATIENT: No, just the Blue Cross.
+
+AGENT: Alright, thanks for confirming that. Let me check what’s available... Looks like we can get you in with Dr. Patel this Thursday at 2:15 PM. Does that work?
+
+PATIENT: Thursday at 2:15 works for me.
+
+AGENT: Excellent. So you're all set—Thursday at 2:15 PM with Dr. Patel at our Westview location on 132 Wellness Blvd. We'll send you a confirmation text along with a link to fill out your intake forms online. Please try to complete that before your appointment.
+
+PATIENT: Will do, thank you.
+
+AGENT: You're welcome! Do you have any questions before we wrap up?
+
+PATIENT: Nope, I’m good.
+
+AGENT: Alright then, James. We’ll see you Thursday. Take care and have a great day!
+
+PATIENT: Thanks, you too!

@@ -109,12 +109,25 @@ def generate_and_display_ideal_call(original_transcript: str, analysis_result: D
             with open(output_filename, 'w', encoding='utf-8') as f:
                 f.write(ideal_call_text)
             print(f"\nIdeal call suggestions saved to: {output_filename}")
+
+            # --- Generate Audio ---
+            #audio_output_filename = transcript_file_path.replace(".txt", "_ideal_call_audio.mp3")
+            #print("\n--- Starting Audio Generation ---")
+            #if generate_audio_from_script(ideal_call_text, audio_output_filename):
+            #     print(f"Ideal call audio successfully generated and saved to: {audio_output_filename}")
+            #else:
+            #     print(f"Ideal call audio generation failed.")
+            # --- End Audio Generation ---
+            
         except Exception as e:
             print(f"Error saving ideal call suggestions: {e}")
 
     else:
         print("\n--- Ideal Call Generation Failed ---")
         print("Failed to get ideal call response from Gemini (RAG).")
+
+    
+
 
 def generate_dummy_transcript(transcript_to_process:str):
         # --- Ensure sample transcript exists for testing ---
@@ -225,9 +238,9 @@ def generate_dummy_transcript(transcript_to_process:str):
 
 if __name__ == "__main__":
     # --- INPUT: Specify the path to your transcript file ---
-    transcript_to_process = "sample_transcript.txt" # <--- CHANGE THIS
+    transcript_to_process = "sample_transcript1.txt" # <--- CHANGE THIS
 
-    if not os.path.exists("sample_transcript.txt"):
+    if not os.path.exists("sample_transcript1.txt"):
         generate_dummy_transcript(transcript_to_process)
 
 
