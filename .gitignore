@@ -7,3 +7,6 @@ sample_transcript.txt
 venv/
 knowledge_base/
 Calls_Generated/Audio_Call_Gen/dialogue_output.mp3
+dialogue_output.mp3
+sample_transcript1_ideal_call_rag.txt
+sample_transcript1_analysis.json

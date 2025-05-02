@@ -121,7 +121,7 @@ def build_ideal_call_prompt(original_transcript: str, analysis_report: Dict[str,
     3.  **Maintain Context:** Keep the '{config.PATIENT_SPEAKER_LABEL}'s dialogue mostly the same as the original transcript to show how the agent *should have* responded. Minor adjustments are acceptable for flow.
     4.  **Format:** Present the output as a revised script or script segments. Clearly label the speakers using '{config.AGENT_SPEAKER_LABEL}:' and '{config.PATIENT_SPEAKER_LABEL}:'. Focus on the most critical segments needing improvement, guided by the analysis and retrieved knowledge. *Do not* output JSON.
 
-    **Generate the improved script/segments now, using the provided knowledge:**
+    **Generate the improved script/segments now, using the provided knowledge, Also, when generating responses, if the agent requests personal details (such as the patient’s phone number, zip code, address, or email) and the provided transcript context does not contain real data, you should generate a realistic, random example (e.g., “Yes, sure, my phone number is 312-555-7842” or “My address is 123 Main Street, Springfield”) instead of inserting placeholders like (Provides Phone Number) or (Provides Address). Ensure the conversation flows naturally, as it would in a real dialogue.:**
     """
     return prompt
 
