@@ -50,7 +50,7 @@ graph TD
     N --> O[Ideal Call Audio .mp3]
 
     style J fill:#f9f,stroke:#333,stroke-width:2px
-    style O fill:#ccf,stroke:#333,stroke-width:2px
+    style O fill:#ccf,stroke:#333,stroke-width:2px,color:#000
 ````
 
 ### Input:
@@ -68,7 +68,7 @@ graph TD
 
 ### Output:
 
-- The process yields the analysis report (`_analysis.json`), the ideal call script (`_ideal_call_rag.txt`), and the ideal call audio (`_ideal_call_audio.mp3`).
+- The process yields the analysis report (`_analysis.json`), the ideal call script (`_ideal_call_rag.txt`), and the ideal call audio (`**_ideal_call_audio.mp3**`).
 
 ## 🖥️ Technology Stack
 
