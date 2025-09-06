@@ -11,7 +11,7 @@ This project provides an AI-driven solution to enhance customer support quality 
 1. **Structure the Dialogue:** Automatically format raw transcripts and assign speaker labels (Agent/Patient) using Google Gemini.
 2. **Analyze Performance:** Evaluate the agent's performance against predefined Key Performance Indicators (KPIs), identify mistakes, and assess soft skills like empathy and tone using Google Gemini.
 3. **Generate Ideal Responses:** Leverage a Retrieval-Augmented Generation (RAG) approach. Based on the analysis, it retrieves relevant best practices from a knowledge base and uses Google Gemini to generate an improved, "ideal" call script.
-4. **Synthesize Audio:** Convert the generated ideal call script into realistic audio using the ElevenLabs Text-to-Speech API, creating ready-to-use training material.
+4. **Synthesize Audio:** Convert the generated ideal call script into realistic audio using the Nari-Dia an Open Sourced TTS Model, creating ready-to-use training material.
 
 The ultimate goal is to provide actionable feedback and concrete examples of best practices, helping agents improve communication clarity, accuracy, empathy, and overall service quality.
 
@@ -23,7 +23,7 @@ The ultimate goal is to provide actionable feedback and concrete examples of bes
 - **💬 Soft Skill Assessment:** Evaluates qualitative aspects like confidence, tone, empathy, and conversation flow.
 - **📚 RAG-Powered Generation:** Retrieves relevant best practices or script examples from a local knowledge base based on identified shortcomings before generating the ideal call.
 - **💡 Ideal Call Scripting:** Generates text scripts demonstrating how the call _should_ have ideally been handled, incorporating best practices and addressing identified mistakes.
-- **🔊 Realistic Audio Synthesis:** Creates high-quality audio versions of the ideal call scripts using customizable ElevenLabs voices.
+- **🔊 Realistic Audio Synthesis:** Creates high-quality audio versions of the ideal call scripts using customizable voices through Voice Cloning in Nari-Dia.
 - **🔧 Modular Design:** Code is structured into distinct modules for clarity and maintainability (configuration, KPIs, processing, API clients, RAG, TTS).
 
 ## ⚙️ How It Works (Workflow)
@@ -46,7 +46,7 @@ graph TD
     K --> L
 
     L --> M[Ideal Call Script Text]
-    M --> N[ElevenLabs TTS]
+    M --> N[Nari-Dia TTS]
     N --> O[Ideal Call Audio .mp3]
 
     style J fill:#f9f,stroke:#333,stroke-width:2px
@@ -64,7 +64,7 @@ graph TD
 - **Analysis:** The formatted transcript and the list of KPIs (kpis.py) are sent to Google Gemini for evaluation. Gemini returns a structured JSON report detailing KPI adherence, mistakes, and soft skills assessment.
 - **Retrieval (RAG):** Based on the mistakes and missed KPIs in the analysis report, the retriever.py module identifies relevant keywords and fetches corresponding best practice snippets or examples from the knowledge_base/ directory.
 - **Generation (RAG):** The original formatted transcript, the analysis report, and the retrieved knowledge chunks are combined into a prompt for Google Gemini. Gemini generates an improved "ideal" call script text, guided by the retrieved best practices.
-- **TTS Synthesis:** The generated ideal script text is processed line by line. Each utterance is sent to the ElevenLabs API using pre-configured voices for the Agent and Patient. The resulting audio chunks are streamed and saved as a single .mp3 file.
+- **TTS Synthesis:** The generated ideal script text is processed line by line. Each utterance is sent to the Nari-Dia using pre-configured voices for the Agent and Patient. The resulting audio chunks are streamed and saved as a single .mp3 file.
 
 ### Output:
 
@@ -74,7 +74,7 @@ graph TD
 
 - Python 3.x
 - Google Gemini API (google-generativeai)
-- ElevenLabs API (elevenlabs)
+- TTS Model (Nari-Dia / ElevenLabs)
 - OpenAI Whisper (assumed externally for Speech-to-Text)
 - python-dotenv (for secure API key management)
 
@@ -84,7 +84,7 @@ graph TD
 
 - Python 3.8+ installed
 - Access to Google Gemini API (API Key)
-- Access to ElevenLabs API (API Key and Voice IDs)
+- Access to ElevenLabs API (API Key and Voice IDs) or any TTS Model.
 - An external process or tool for audio-to-text transcription (e.g., Whisper). This project assumes you already have the raw text output.
 
 ### 2. Clone the Repository
@@ -110,7 +110,7 @@ pip install -r requirements.txt
 (Note: If requirements.txt does not exist yet, run below to generate it:)
 
 ```bash
-pip install google-generativeai python-dotenv elevenlabs
+pip install google-generativeai python-dotenv 
 pip freeze > requirements.txt
 ```
 
@@ -198,7 +198,7 @@ ai_call_analyzer/
 ├── gemini_client.py        # Google Gemini API client
 ├── analysis_parser.py      # Parses analysis responses
 ├── retriever.py            # RAG retrieval logic
-├── tts_generator.py        # ElevenLabs TTS client
+├── tts_generator.py        # Nari-Dia TTS client
 ├── populate_knowledge_base.py # Helper script
 ├── requirements.txt        # Dependencies
 └── README.md               # This file
