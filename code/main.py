@@ -1,15 +1,15 @@
 # main.py
 import json
 import os
-import config # To access configuration constants easily if needed
-from kpis import KPI_LIST
+import code.config as config # To access configuration constants easily if needed
+from code.kpis import KPI_LIST
 from typing import List, Dict, Any
-from transcript_processor import load_transcript
+from code.transcript_processor import load_transcript
 # Import BOTH prompt builders now
-from prompt_builder import build_analysis_prompt, build_ideal_call_prompt
-from gemini_client import generate_analysis # This function handles sending prompts to Gemini
-from analysis_parser import parse_gemini_response
-from retriever import retrieve_relevant_knowledge
+from code.prompt_builder import build_analysis_prompt, build_ideal_call_prompt
+from code.gemini_client import generate_analysis # This function handles sending prompts to Gemini
+from code.analysis_parser import parse_gemini_response
+from code.retriever import retrieve_relevant_knowledge
 from tts_generator import generate_audio_from_script # <-- Import the TTS function
 
 def run_analysis(transcript_file_path: str) -> Dict[str, Any] | None:

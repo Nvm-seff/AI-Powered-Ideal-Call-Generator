@@ -1,8 +1,8 @@
 import whisper
 import os 
-import config
-from prompt_builder import build_analysis_prompt, build_ideal_call_prompt, build_diarization_prompt
-from gemini_client import generate_analysis # Reusable Gemini client function
+import code.config as config
+from code.prompt_builder import build_analysis_prompt, build_ideal_call_prompt, build_diarization_prompt
+from code.gemini_client import generate_analysis # Reusable Gemini client function
 
 # --- Configuration ---
 AUDIO_FILENAME = os.path.join("voice_samples", "patient_voice_sample.wav")# Your input audio file

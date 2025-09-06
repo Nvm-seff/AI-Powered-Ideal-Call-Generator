@@ -5,7 +5,7 @@ from elevenlabs.client import ElevenLabs
 # Corrected import: Use 'ApiError' (lowercase 'i') and remove RateLimitError for now
 from elevenlabs.client import ApiError # <--- CORRECTED IMPORT
 from elevenlabs import play # Optional
-import config
+import code.config as config
 
 API_KEY = config.ELEVENLABS_API_KEY
 AGENT_ID = config.AGENT_VOICE_ID

@@ -1,6 +1,6 @@
 # gemini_client.py
 import google.generativeai as genai
-import config # Import config for API key and model settings
+import code.config as config # Import config for API key and model settings
 from google.generativeai.types import GenerationConfig # For more detailed config
 
 def configure_gemini():

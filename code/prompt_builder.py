@@ -1,6 +1,6 @@
 # prompt_builder.py
 from typing import List, Dict, Any
-import config # Import config to get speaker labels
+import code.config as config # Import config to get speaker labels
 
 def build_analysis_prompt(transcript: str, kpis: List[str]) -> str:
     """
