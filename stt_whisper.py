@@ -5,8 +5,8 @@ from prompt_builder import build_analysis_prompt, build_ideal_call_prompt, build
 from gemini_client import generate_analysis # Reusable Gemini client function
 
 # --- Configuration ---
-AUDIO_FILENAME = "Patient_call.mp3" # Your input audio file
-OUTPUT_TEXT_FILENAME = "sample_transcript1.txt" # Name for the output text file
+AUDIO_FILENAME = os.path.join("voice_samples", "patient_voice_sample.wav")# Your input audio file
+OUTPUT_TEXT_FILENAME = "patient_voice_sample_transcript1.txt" # Name for the output text file
 MODEL_SIZE = "base" # Or "tiny", "small", "medium", "large" depending on your needs/resources
 
 

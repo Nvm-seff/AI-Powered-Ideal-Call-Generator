@@ -10,8 +10,8 @@ import config
 API_KEY = config.ELEVENLABS_API_KEY
 AGENT_ID = config.AGENT_VOICE_ID
 PATIENT_ID = config.PATIENT_VOICE_ID
-TRANSCRIPT_FILE = "sample_transcript1_ideal_call_rag.txt"
-OUTPUT_FILENAME = "dialogue_output.mp3"
+TRANSCRIPT_FILE = "sample_transcript_ideal_call_rag.txt"
+OUTPUT_FILENAME = "sample_output_for_cloning.mp3"
 MODEL_ID = "eleven_multilingual_v2" # Or "eleven_monolingual_v1"
 
 # --- Validation ---

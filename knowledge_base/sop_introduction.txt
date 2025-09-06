@@ -5,6 +5,6 @@ Example Script Opening:
 
 Key elements:
 - Greeting (Thank you for calling CareCloud MTBC...)
-- Clinic Name (CareCloud MTBC)
+- Clinic Name
 - Agent Name
 - Polite request for patient identification (e.g., name)

@@ -1,0 +1,7 @@
+[S1] Hello, thank you for calling CareCloud MTBC, my name is Ben.
+[S2] Hi Ben, it's Sarah Miller.
+[S1] Thank you, Sarah Miller. Could you please spell your last name for me to ensure I have it correct?
+[S2] Sure, M-I-L-L-E-R.
+[S1] Perfect, thank you.  And could you verify the best phone number to reach you at?
+[S2] Here is the phone number you can reach me at 5 5 5 - 9 8 7 - 6 5 4 3.
+[S1] Thank you, Sarah.
